@@ -6,6 +6,7 @@ $(document).ready(function(){
     $('.owl-nested').owlCarousel({
         items: 1,
         nav: true,
+        navElement: "div",
         touchDrag: false,
         pullDrag: false
     });

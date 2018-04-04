@@ -23,24 +23,13 @@
             {
 				if (e.namespace && !this._init) {
                     this.$stage = this._core.$stage;
-                    this.$nav  = $('.' + 
-                        this.options.navContainerClass + ', .' + 
-                        this.options.dotsClass, this.$element);
-
-                    this.$nav.children()
-                        .attr("role", "button")
-                        .attr("tabindex", "0")
-                        .storeTabindex();
-
+                    this.navigation();
                     this.bind();
                     this.setAria();
                     this._init = true;
 				}
             },
             'changed.owl.carousel':    e => this.setAria()
-            //'translated.owl.carousel': e => this.setAria(),
-            //'refreshed.owl.carousel':  e => this.setAria(),
-            //'resized.owl.carousel':    e => this.setAria()
 		});
     }
 
@@ -57,6 +46,30 @@
         this.$element.find('*').storeTabindex();
     };
 
+    Aria.prototype.navigation = function()
+    {
+        this.$nav  = $('.' + 
+        this.options.navContainerClass + ', .' + 
+        this.options.dotsClass, this.$element);
+        const noButtonSel = ":not(button):not(input[type='submit'])";
+
+        this.$nav.children()
+        .attr("role", "button")
+        .attr("tabindex", "0")
+        .storeTabindex().filter(noButtonSel).each((i, e) => 
+        {
+            const $el = $(e);
+
+            $el.on('keydown', e => 
+            {
+                if (e.keyCode === 32 || e.keyCode === 13) {
+                    $el.trigger('click');
+                    return false;
+                }
+            });
+        });
+    }
+
     Aria.prototype.bind = function()
     {
         
@@ -67,7 +80,7 @@
         this.$element
         .on('focusin',  (e) => this.focus(e))
         .on('focusout', (e) => this.blur(e))
-        .on('keyup',    (e) => this.keyUp(e));
+        .on('keydown',  (e) => this.keydown(e));
     };
 
     Aria.prototype.focus = function() 
@@ -80,7 +93,7 @@
         this.$element.attr({'aria-live': 'off'});
     };
 
-    Aria.prototype.keyUp = function(e) 
+    Aria.prototype.keydown = function(e) 
     {
         let action = null;
 
@@ -92,9 +105,8 @@
 
         if (action !== null) {
             this.$element.trigger(action);
+            return false; 
         }
-
-        return false; // important!
     };
 
     Aria.prototype.setAria = function() 
@@ -147,7 +159,7 @@
         this.$element
         .off('focusin',  (e) => this.focus(e))
         .off('focusout', (e) => this.blur(e))
-        .off('keyup',    (e) => this.keyUp(e));
+        .off('keydown',  (e) => this.keydown(e));
     };
 
     $.fn.extend({
