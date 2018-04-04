@@ -16,30 +16,31 @@
             return false;
         }
 
-        this.$element  = this._core.$element;
-
-        this._init     = false;
-
+        this.setup();
         this.$element.on(
         {
             'initialized.owl.carousel': e =>
             {
 				if (e.namespace && !this._init) {
                     this.$stage = this._core.$stage;
-
                     this.$nav  = $('.' + 
                         this.options.navContainerClass + ', .' + 
                         this.options.dotsClass, this.$element);
+
+                    this.$nav.children()
+                        .attr("role", "button")
+                        .attr("tabindex", "0")
+                        .storeTabindex();
 
                     this.bind();
                     this.setAria();
                     this._init = true;
 				}
             },
-            'changed.owl.carousel':    e => this.setAria(),
-            'translated.owl.carousel': e => this.setAria(),
-            'refreshed.owl.carousel':  e => this.setAria(),
-            'resized.owl.carousel':    e => this.setAria()
+            'changed.owl.carousel':    e => this.setAria()
+            //'translated.owl.carousel': e => this.setAria(),
+            //'refreshed.owl.carousel':  e => this.setAria(),
+            //'resized.owl.carousel':    e => this.setAria()
 		});
     }
 
@@ -48,9 +49,17 @@
         aria: true
     };
 
+    Aria.prototype.setup = function()
+    {
+        this._init     = false;
+        this.$element  = this._core.$element;
+        this.$element.attr('tabindex', '0').storeTabindex();
+        this.$element.find('*').storeTabindex();
+    };
+
     Aria.prototype.bind = function()
     {
-        this.$element.attr('tabindex', '0');
+        
         this.$element.on('to.owl.carousel',      (e) => e.stopPropagation());
         this.$element.on('next.owl.carousel',    (e) => e.stopPropagation());
         this.$element.on('prev.owl.carousel',    (e) => e.stopPropagation());
@@ -117,15 +126,12 @@
                     const $el = $(e);
                     
                     if (isActive === false) {
+            
                         $el.storeTabindex();
                         $el.attr("tabindex", "-1");
                         
                     } else {
-                        if ($el.is('[data-tabindex]')) {
-                            $el.restoreTabindex();
-                        } else {
-                            $el.removeAttr("tabindex");
-                        }
+                        $el.restoreTabindex();
                     }
                 });
             });
@@ -137,7 +143,7 @@
         this.$element.removeAttr('aria-live');
         this.$element.removeAttr('tabindex');
         this.$element.children().removeAttr('aria-hidden');
-        this.$element.find('[data-store-tabindex]').clearTabindex();
+        this.$element.find('[data-tabindex]').restoreTabindex();
         this.$element
         .off('focusin',  (e) => this.focus(e))
         .off('focusout', (e) => this.blur(e))
@@ -145,7 +151,7 @@
     };
 
     $.fn.extend({
-        clearTabindex: function()
+        restoreTabindex: function()
         {
             return this.each(function() 
             {
@@ -153,34 +159,19 @@
 
                 if (!$el.is('[data-tabindex]')) {
                     $el.removeAttr("tabindex");
-                }
-    
-                $el.restoreTabindex();
-            });
-        },
-        restoreTabindex: function() 
-        {
-            return this.each(function() 
-            {
-                const $el = $(this);
-
-                if ($el.is('[data-tabindex]')) {
+                } else {
                     $el.attr("tabindex", $el.attr('data-tabindex'));
-                    $el.removeAttr('data-tabindex');
-                } 
-
-                $el.removeAttr('data-store-tabindex');
+                }
             });
         },
         storeTabindex: function() {
             return this.each(function()
             {
                 const $el = $(this);
-                if ($el.is('[tabindex]')) {
+                
+                if ($el.is('[tabindex]') && !$el.is('[data-tabindex]')) {
                     $el.attr("data-tabindex", $el.attr('tabindex'));
                 }
-
-                $el.attr('data-store-tabindex', true);
             });
         }
     });
