@@ -6,7 +6,10 @@
     "owl",
     "carousel",
     "aria",
-    "a11y"
+    "a11y",
+    "accessibility",
+    "owl.carousel",
+    "layer"
   ],
   "author": {
     "name": "Stephan Fischer",
@@ -15,5 +18,16 @@
   },
   "dependencies": {
     "owl.carousel": "^2.3.3"
+  },
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^7.0.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-minifier": "^1.2.2",
+    "gulp-rename": "^1.2.2",
+    "gulp-sourcemaps": "^2.6.4"
   }
 }
