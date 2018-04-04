@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Owl Carousel Aria</title>
+        <link rel="stylesheet" href="/node_modules/owl.carousel/dist/assets/owl.carousel.min.css" />
+        <script src="/node_modules/jquery/dist/jquery.js"></script>
+        <script src="/node_modules/owl.carousel/dist/owl.carousel.min.js"></script>
+        <script src="/owl.carousel.aria.js"></script>
+        <script src="/main.js"></script>
+        <style>
+            .owl-carousel {
+                background: #ccc;
+            }
+
+            .owl-carousel .owl-carousel {
+                background: blue;
+            }
+
+            .owl-carousel div[aria-hidden=false] {
+                background: green;
+            }
+
+            .owl-carousel button.owl-dot {
+                width: 30px;
+                height: 30px;
+                border: 2px solid red;
+                background: green !important;
+                display: inline-block;
+                margin: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Single</h1>
+        <div class="owl-carousel owl-main">
+            <div> 1 </div>
+            <div> 2 </div>
+            <div> <button>Klick mich</button></div>
+            <div> 4 </div>
+            <div> 5</div>
+            <div> 6 </div>
+            <div> 7 </div>
+        </div>
+
+        <h1>Nested</h1>
+        <div class="owl-carousel owl-main">
+                <div>
+                        <div class="owl-carousel owl-nested">
+                            <div> Sub 1 </div>
+                            <div> Sub 2 </div>
+                            <div> Sub 3 </div>
+                        </div>
+                    </div>
+            <div> 2 </div>
+            <div> 3 </div>
+            <div> 4 </div>
+        </div>
+
+        <button id="destroy">destroy owl carousel</button>
+    </body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "name": "owl-aria",
+  "version": "1.0.1",
+  "description": "Owl Carousel v2 accessibility layer",
+  "keywords": [
+    "owl",
+    "carousel",
+    "aria",
+    "a11y"
+  ],
+  "author": {
+    "name": "Stephan Fischer",
+    "email": "stephan@mrfischer.de",
+    "url": "http://www.mrfischer.de"
+  },
+  "dependencies": {
+    "owl.carousel": "^2.3.3"
+  }
+}
