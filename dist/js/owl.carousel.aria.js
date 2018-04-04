@@ -22,10 +22,7 @@
             'initialized.owl.carousel': function initializedOwlCarousel(e) {
                 if (e.namespace && !_this._init) {
                     _this.$stage = _this._core.$stage;
-                    _this.$nav = $('.' + _this.options.navContainerClass + ', .' + _this.options.dotsClass, _this.$element);
-
-                    _this.$nav.children().attr("role", "button").attr("tabindex", "0").storeTabindex();
-
+                    _this.navigation();
                     _this.bind();
                     _this.setAria();
                     _this._init = true;
@@ -34,9 +31,6 @@
             'changed.owl.carousel': function changedOwlCarousel(e) {
                 return _this.setAria();
             }
-            //'translated.owl.carousel': e => this.setAria(),
-            //'refreshed.owl.carousel':  e => this.setAria(),
-            //'resized.owl.carousel':    e => this.setAria()
         });
     };
 
@@ -49,6 +43,22 @@
         this.$element = this._core.$element;
         this.$element.attr('tabindex', '0').storeTabindex();
         this.$element.find('*').storeTabindex();
+    };
+
+    Aria.prototype.navigation = function () {
+        this.$nav = $('.' + this.options.navContainerClass + ', .' + this.options.dotsClass, this.$element);
+        var noButtonSel = ":not(button):not(input[type='submit'])";
+
+        this.$nav.children().attr("role", "button").attr("tabindex", "0").storeTabindex().filter(noButtonSel).each(function (i, e) {
+            var $el = $(e);
+
+            $el.on('keydown', function (e) {
+                if (e.keyCode === 32 || e.keyCode === 13) {
+                    $el.trigger('click');
+                    return false;
+                }
+            });
+        });
     };
 
     Aria.prototype.bind = function () {
@@ -70,8 +80,8 @@
             return _this2.focus(e);
         }).on('focusout', function (e) {
             return _this2.blur(e);
-        }).on('keyup', function (e) {
-            return _this2.keyUp(e);
+        }).on('keydown', function (e) {
+            return _this2.keydown(e);
         });
     };
 
@@ -83,7 +93,7 @@
         this.$element.attr({ 'aria-live': 'off' });
     };
 
-    Aria.prototype.keyUp = function (e) {
+    Aria.prototype.keydown = function (e) {
         var action = null;
 
         if (e.keyCode == 37 || e.keyCode == 38) {
@@ -94,9 +104,8 @@
 
         if (action !== null) {
             this.$element.trigger(action);
+            return false;
         }
-
-        return false; // important!
     };
 
     Aria.prototype.setAria = function () {
@@ -146,8 +155,8 @@
             return _this4.focus(e);
         }).off('focusout', function (e) {
             return _this4.blur(e);
-        }).off('keyup', function (e) {
-            return _this4.keyUp(e);
+        }).off('keydown', function (e) {
+            return _this4.keydown(e);
         });
     };
 
