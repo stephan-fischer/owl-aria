@@ -2,6 +2,7 @@
   "name": "owl-aria",
   "version": "1.0.1",
   "description": "Owl Carousel v2 accessibility layer",
+  "homepage": "https://github.com/stephan-fischer/owl-aria",
   "keywords": [
     "owl",
     "carousel",
@@ -23,6 +24,7 @@
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
+    "bower": "^1.8.4",
     "gulp": "^3.9.1",
     "gulp-babel": "^7.0.1",
     "gulp-concat": "^2.6.1",

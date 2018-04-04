@@ -1,0 +1,25 @@
+{
+  "name": "owl-aria",
+  "description": "Owl Carousel v2 accessibility layer",
+  "authors": [
+    "Stephan Fischer <stephan@mrfischer.de>"
+  ],
+  "license": "GPL-3.0",
+  "keywords": [
+    "owl",
+    "carousel",
+    "aria",
+    "a11y",
+    "accessibility",
+    "owl.carousel",
+    "layer"
+  ],
+  "homepage": "https://github.com/stephan-fischer/owl-aria",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
