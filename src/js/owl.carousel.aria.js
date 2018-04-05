@@ -21,7 +21,7 @@
         {
             'initialized.owl.carousel': e =>
             {
-				if (e.namespace && !this._init) {
+                if (e.namespace && !this._init) {
                     this.$stage = this._core.$stage;
                     this.navigation();
                     this.bind();
@@ -53,9 +53,10 @@
         this.options.dotsClass, this.$element);
         const noButtonSel = ":not(button):not(input[type='submit'])";
 
+        this.setNavAria();
+
         this.$nav.children()
         .attr("role", "button")
-        .attr("tabindex", "0")
         .storeTabindex().filter(noButtonSel).each((i, e) => 
         {
             const $el = $(e);
@@ -109,23 +110,38 @@
         }
     };
 
+    Aria.prototype.setNavAria = function()
+    {
+        this.$nav.children().each((i, el) => 
+        {
+            const $el = $(el);
+            const isDisabled = $el.hasClass('disabled') || $el.hasClass('active');
+
+            $el.attr('aria-disabled', isDisabled  ? "true": "false");
+            
+            if (isDisabled) {
+                $el.attr("tabindex", "-1");
+                $el.attr("data-tabindex", $el.attr('tabindex'));
+            } else {
+                
+                $el.attr("tabindex", "0");
+                $el.attr("data-tabindex", $el.attr('tabindex'));
+            }
+
+        });
+    };
+
     Aria.prototype.setAria = function() 
     {
         if (!this.$stage || !this.$stage.length)  {
             return false;
         }
 
+        this.setNavAria();
+        
         setTimeout(() => 
         {
-            this.$nav.children().each((i, el) => 
-            {
-                const $item = $(el);
-                const isDisabled = $item.hasClass('disabled');
-                const isActive = $item.hasClass('active');
 
-                $item.attr('aria-disabled', isDisabled || isActive ? "true": "false");
-
-            });
 
             this.$stage.children().each((i, el) => 
             {

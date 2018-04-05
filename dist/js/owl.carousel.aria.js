@@ -49,7 +49,9 @@
         this.$nav = $('.' + this.options.navContainerClass + ', .' + this.options.dotsClass, this.$element);
         var noButtonSel = ":not(button):not(input[type='submit'])";
 
-        this.$nav.children().attr("role", "button").attr("tabindex", "0").storeTabindex().filter(noButtonSel).each(function (i, e) {
+        this.setNavAria();
+
+        this.$nav.children().attr("role", "button").storeTabindex().filter(noButtonSel).each(function (i, e) {
             var $el = $(e);
 
             $el.on('keydown', function (e) {
@@ -108,6 +110,24 @@
         }
     };
 
+    Aria.prototype.setNavAria = function () {
+        this.$nav.children().each(function (i, el) {
+            var $el = $(el);
+            var isDisabled = $el.hasClass('disabled') || $el.hasClass('active');
+
+            $el.attr('aria-disabled', isDisabled ? "true" : "false");
+
+            if (isDisabled) {
+                $el.attr("tabindex", "-1");
+                $el.attr("data-tabindex", $el.attr('tabindex'));
+            } else {
+
+                $el.attr("tabindex", "0");
+                $el.attr("data-tabindex", $el.attr('tabindex'));
+            }
+        });
+    };
+
     Aria.prototype.setAria = function () {
         var _this3 = this;
 
@@ -115,14 +135,9 @@
             return false;
         }
 
-        setTimeout(function () {
-            _this3.$nav.children().each(function (i, el) {
-                var $item = $(el);
-                var isDisabled = $item.hasClass('disabled');
-                var isActive = $item.hasClass('active');
+        this.setNavAria();
 
-                $item.attr('aria-disabled', isDisabled || isActive ? "true" : "false");
-            });
+        setTimeout(function () {
 
             _this3.$stage.children().each(function (i, el) {
                 var $item = $(el);
