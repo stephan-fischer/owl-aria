@@ -9,7 +9,7 @@ Written by [Stephan Fischer](mailto:stephan@mrfischer.de)
 
 ### Commercial license
 
-If you want to use owl-aria to develop commercial sites, themes, projects, and applications, the Commercial license is the appropriate license. [[Purchase a Owl-Aria Commercial License]](https://gumroad.com/l/hzuWp)
+If you want to use owl-aria to develop commercial sites, themes, projects, and applications, the Commercial license is the appropriate license. [[Purchase an Owl-Aria Commercial License]](https://gumroad.com/l/hzuWp)
 
 ## Requirements
 
